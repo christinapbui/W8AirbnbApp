@@ -29,12 +29,14 @@ mongoose.connect(process.env.DB, {
   useNewUrlParser: true, 
   useFindAndModify: false, 
   useUnifiedTopology: true 
-  })
-  .then(()=> console.log("connected to database"))
+})
+.then(()=> console.log("connected to database"))
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+// app.use('/me', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

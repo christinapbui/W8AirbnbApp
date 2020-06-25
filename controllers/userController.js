@@ -32,6 +32,26 @@ exports.getMyProfile = async (req, res, next) => {
     })
 }
 
+exports.changeInfo = async (req, res, next) => {
+    try{
+        const user = await User.findById(req.user._id)
+        const fields = Object.keys(req.body);
+        fields.map(field => user[field] = req.body[field])
+        await user.save();
+        res.status(200).json({
+            status: "successfully changed info",
+            data: user
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ 
+            status: "error",
+            error: err.message
+        })
+    }
+
+}
+
 exports.logout = async function (req, res) {
     try{
         const token = req.headers.authorization.replace("Bearer ","")
