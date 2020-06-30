@@ -1,16 +1,39 @@
 const User = require("../models/user")
 
 
+// get list of users
+exports.getUserList = async (req, res, next) => {
+    try {
+        const userList = await User.find({}) // use this to query and get list of users and return it // empty object unless you want to execute a certain condition
+        
+        res.status(200).json({ // 200 is successful code
+            userList
+        })
+        
+    }catch(err) {
+        res.status(400).json({
+            status: "failed to get list",
+            error: err.message
+        })
+    }
+}
+
+
 exports.createUser = async (req, res, next) => {
     try{
-        const {email, displayName, password} = req.body;
-        if(!email || !displayName || !password){
+        const {email, displayName, password, userRole} = req.body;
+        if(!email || !displayName || !password ){
             return res.status(400).json({  // 400 is bad request (wrong format, not enough required arguments)
                 status: "fail", 
                 error: "Email, name, and password are required"
             })
         }
-        const user = await User.create({email: email, displayName: displayName, password: password })
+        const user = await User.create({
+            email: email, 
+            displayName: displayName, 
+            password: password,
+            userRole: userRole || "normal"
+        })
         res.status(201).json({ // 201 means new thing created
             status: "ok",
             data: user

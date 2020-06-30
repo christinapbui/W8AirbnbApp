@@ -26,6 +26,12 @@ const schema = new mongoose.Schema({ // syntax to create new model
         type: String,
         required: [true, "Password is required!"]
     },
+    userRole: {
+        type: String,
+        enum: ["normal", "host"], // cannot input any other value aside from "normal" or "host"
+        required: [true, "User role is required!"],
+        default: "normal"
+    },
     tokens: [String] // this needs to be stored somewhere // it is an array of strings
 
 }, {
@@ -95,8 +101,6 @@ schema.pre("save", async function(next){ // this means before we save to the dat
 }) 
 
 // schema.post("save",function(){ // after we save to the database
-
-// })
 
 
 module.exports = mongoose.model("User", schema)

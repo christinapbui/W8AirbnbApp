@@ -19,3 +19,10 @@ exports.loginRequired = async (req, res, next) => {
         return res.status(401).json({ status: "fail", error: err.message })
     }
 }
+
+exports.hostRequired = (req, res, next) => {
+    if(req.user.userRole !== "host") {
+        return res.status(401).json({ status: "fail", message: "host required" })
+    }
+    next()
+}
