@@ -24,7 +24,7 @@ const schema = new mongoose.Schema({ // syntax to create new model
     },
     password: {
         type: String,
-        required: [true, "Password is required!"]
+        // required: [true, "Password is required!"]
     },
     userRole: {
         type: String,
@@ -102,5 +102,16 @@ schema.pre("save", async function(next){ // this means before we save to the dat
 
 // schema.post("save",function(){ // after we save to the database
 
+schema.statics.findOneOrCreate = async function({email, name}){
+    // "this" refers to User model
+    let user = await this.findOne({ email })
+    if(!user){
+        user = await this.create({ // user model
+            email: email, 
+            displayName: name
+        })
+    }
+    return user 
+}
 
 module.exports = mongoose.model("User", schema)

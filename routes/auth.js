@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-const { loginWithEmail } = require("../controllers/authController")
+const { loginWithEmail, loginFacebook, facebookAuthHandler, loginGoogle, googleAuthHandler } = require("../controllers/authController")
 const { logout } = require("../controllers/userController");
 const { loginRequired } = require("../middleware/auth")
 
@@ -17,5 +17,18 @@ router.route("/login")
 //logout
 router
 .get("/logout", loginRequired, logout)
+
+// router.route("logout").get(loginRequired, logout)
+router.route("/facebook/login")
+.get(loginFacebook)
+
+router.route("/facebook/authorized")
+.get(facebookAuthHandler)
+
+router.route("/google/login")
+.get(loginGoogle)
+
+router.route("/google/authorized")
+.get(googleAuthHandler)
 
 module.exports = router;

@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const AppError = require("./utils/AppError")
 const mongoose = require("mongoose")
+const passport = require("passport")
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -32,6 +33,7 @@ mongoose.connect(process.env.DB, {
 })
 .then(()=> console.log("connected to database"))
 
+app.use(passport.initialize()) // this has to be above routers
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
